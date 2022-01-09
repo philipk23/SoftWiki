@@ -10,5 +10,8 @@
     "start": "lite-server"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "lit-html": "^2.1.1"
+  }
 }
