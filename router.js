@@ -4,7 +4,9 @@ import layout from './views/layout.js';
 import home from './views/home.js';
 import login from './views/login.js';
 import notFound from './views/not-found.js';
-import { onLoginSubmit } from './eventListeners.js';
+import register from './views/register.js';
+import { onLoginSubmit, onRegisterSubmit } from './eventListeners.js';
+import { getUserData } from './services/authService.js';
 
 const routes = [
     {
@@ -14,13 +16,20 @@ const routes = [
     {
         path: '/login',
         template: login,
-        context:{
+        context: {
             onLoginSubmit
         }
     },
     {
         path: '/not-found',
         template: notFound
+    },
+    {
+        path: '/register',
+        template: register,
+        context: {
+            onRegisterSubmit
+        }
     }
 ];
 
@@ -28,8 +37,9 @@ const router = (path) => {
     history.pushState({}, '', path);
 
     let route = routes.find(x => x.path == path) || routes.find(x => x.path == '/not-found');
-    let context = route.context
-    render(layout(route.template(context), { navigationHandler }), document.getElementById('app'));
+    let context = route.context;
+    let userData = getUserData();
+    render(layout(route.template(context), { navigationHandler, ...userData }), document.getElementById('app'));
 }
 
 function navigationHandler(e){
