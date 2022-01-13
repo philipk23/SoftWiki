@@ -1,6 +1,10 @@
+import router from "./router.js";
+import { create } from "./services/articleService.js";
 import { login, register } from "./services/authService.js";
 
 export const onLoginSubmit = (e) => {
+    console.log('logged in');
+    
     e.preventDefault();
 
     let formData = new FormData(e.target);
@@ -10,9 +14,9 @@ export const onLoginSubmit = (e) => {
 
     login(email, password)
         .then(data => {
-            console.log(data);
-        })
-}
+            router('/');
+        });
+};
 
 export const onRegisterSubmit = (e) => {
     e.preventDefault();
@@ -32,6 +36,25 @@ export const onRegisterSubmit = (e) => {
 
     register(email, password)
         .then(data => {
+            router('/')
+        });
+};
+
+export const onCreateSubmit = (e) => {
+    e.preventDefault();
+
+    let formData = new FormData(e.target);
+
+    let article = {
+        title: formData.get('title'),
+        category: formData.get('category'),
+        content: formData.get('content'),
+    }
+
+    create(article)
+        .then(data => {
             console.log(data);
+            router('/');
         })
+
 }

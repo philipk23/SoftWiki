@@ -1,4 +1,4 @@
-export const request = async (method, url, body) => {
+const request = async (method, url, body) => {
     let options = {
         method,
     };

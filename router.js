@@ -5,30 +5,55 @@ import home from './views/home.js';
 import login from './views/login.js';
 import notFound from './views/not-found.js';
 import register from './views/register.js';
-import { onLoginSubmit, onRegisterSubmit } from './eventListeners.js';
-import { getUserData } from './services/authService.js';
+import createArticle from './views/createArticle.js';
+import { onLoginSubmit, onRegisterSubmit, onCreateSubmit } from './eventListeners.js';
+import { getUserData, logout } from './services/authService.js';
 
 const routes = [
     {
         path: '/',
-        template: home
+        template: (props) => {
+            let template = home;
+            let url = ('/');
+
+            if (!props.isAuthenticated) {
+                template = login;
+                url = ('/login');
+            }
+
+            history.pushState({}, '', url);
+
+            return template(props);
+        }
+    },
+    {
+        path: '/logout',
+        template: (props) => {
+            logout();
+            history.pushState({}, '', '/');
+            return login(props); 
+        }
     },
     {
         path: '/login',
         template: login,
-        context: {
-            onLoginSubmit
-        }
     },
     {
         path: '/not-found',
-        template: notFound
+        template: notFound,
     },
     {
         path: '/register',
         template: register,
         context: {
             onRegisterSubmit
+        }
+    },
+    {
+        path: '/create',
+        template: createArticle,
+        context: {
+            onCreateSubmit
         }
     }
 ];
@@ -39,7 +64,7 @@ const router = (path) => {
     let route = routes.find(x => x.path == path) || routes.find(x => x.path == '/not-found');
     let context = route.context;
     let userData = getUserData();
-    render(layout(route.template(context), { navigationHandler, ...userData }), document.getElementById('app'));
+    render(layout(route.template, { navigationHandler, onLoginSubmit, ...userData, ...context}), document.getElementById('app'));
 }
 
 function navigationHandler(e){

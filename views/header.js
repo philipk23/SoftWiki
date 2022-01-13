@@ -15,7 +15,10 @@ export default ({
         <h1><a class="home" href="/">SoftWiki</a></h1>
         <nav class="nav-buttons">
             ${isAuthenticated
-                ? loggedInUsers
+                ? html`
+                    <a href="/create">Create</a>
+                    <a href="/logout">Logout</a>
+                `
                 : html`
                     <a href="/register">Register</a>                
                 `

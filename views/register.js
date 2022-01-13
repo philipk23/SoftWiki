@@ -2,7 +2,7 @@ import { html } from '../node_modules/lit-html/lit-html.js';
 
 export default ({ 
     onRegisterSubmit
- }) => html`
+}) => html`
     //<!-- Register -->
     <div class="container auth">
         <form action="#" method="" @submit="${onRegisterSubmit}">

@@ -5,7 +5,7 @@ import header from './header.js';
 export default (children, props) => html`
     ${header(props)}
     
-    ${children}
+    ${children(props)}
 
     ${footer(props)}
 `;
