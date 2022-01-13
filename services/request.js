@@ -8,7 +8,7 @@ const request = async (method, url, body) => {
             headers: {
                 'content-type': 'application/json'
             },
-            body: JSON.stringify(body)
+            body: JSON.stringify({...body, returnSecureToken: true}),
         });
     }
 

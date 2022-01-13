@@ -37,7 +37,8 @@ export const getUserData = () => {
 
         return {
             isAuthenticated: Boolean(data.idToken),
-            email: data.email
+            email: data.email,
+            idToken: data.idToken,
         };
     } catch (error) {
         return {
