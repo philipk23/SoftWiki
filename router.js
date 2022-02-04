@@ -9,6 +9,7 @@ import createArticle from './views/createArticle.js';
 import { onLoginSubmit, onRegisterSubmit, onCreateSubmit } from './eventListeners.js';
 import { getUserData, logout } from './services/authService.js';
 import articleService from './services/articleService.js';
+import articleDetails from './views/article-details.js';
 
 const routes = [
     {
@@ -57,22 +58,32 @@ const routes = [
         context: {
             onCreateSubmit
         }
+    },
+    {
+        path: '/details/(?<id>\.+)',
+        template: articleDetails,
+        getData: articleService.getOne,
     }
 ];
 
 const router = (path) => {
     history.pushState({}, '', path);
 
-    let route = routes.find(x => x.path == path) || routes.find(x => x.path == '/not-found');
+    
+    let route = routes.find(x => new RegExp(`^${x.path}$`, 'i').test(path)) || routes.find(x => x.path == '/not-found');
+
     let context = route.context;
+
+    let params = new RegExp(`^${route.path}$`, 'i').exec(path).groups;
+
     let userData = getUserData();
     if (route.getData) {
         route.getData()
             .then(data => {
-                render(layout(route.template, { navigationHandler, onLoginSubmit, ...userData, ...context, data }), document.getElementById('app'));
+                render(layout(route.template, { navigationHandler, onLoginSubmit, ...userData, ...context, data, params}), document.getElementById('app'));
             })
     }
-    render(layout(route.template, { navigationHandler, onLoginSubmit, ...userData, ...context}), document.getElementById('app'));
+    render(layout(route.template, { navigationHandler, onLoginSubmit, ...userData, ...context, params}), document.getElementById('app'));
 
 }
 

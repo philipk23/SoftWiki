@@ -18,5 +18,11 @@ export default{
         let response = await request.post(urlBuilder('articles'), article)
         
         return response;
+    },
+
+    async getOne(id){
+        let response = await request.get(urlBuilder('articles', id));
+
+        return response;
     }
 };
