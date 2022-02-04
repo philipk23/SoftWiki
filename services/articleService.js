@@ -7,9 +7,16 @@ const urlBuilder = (resource) => {
     return `https://softwiki-1e4cc-default-rtdb.firebaseio.com/${resource}.json?auth=${idToken}`;
 }
 
-export const create = async (article) => {
-    
-    let response = await request.post(urlBuilder('articles'), article)
+export default{
+    async getAll(){
+        let articles = await request.get(urlBuilder('articles'));
 
-    return response;
-}
+        return Object.keys(articles).map(key => ({_id: key, ...articles[key]})); 
+    },
+
+    async create(article){
+        let response = await request.post(urlBuilder('articles'), article)
+        
+        return response;
+    }
+};

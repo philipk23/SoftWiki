@@ -1,5 +1,5 @@
 import router from "./router.js";
-import { create } from "./services/articleService.js";
+import articleService from "./services/articleService.js";
 import { login, register } from "./services/authService.js";
 
 export const onLoginSubmit = (e) => {
@@ -51,10 +51,8 @@ export const onCreateSubmit = (e) => {
         content: formData.get('content'),
     }
 
-    create(article)
-        .then(data => {
-            console.log(data);
+    articleService.create(article)
+        .then(res => {
             router('/');
         })
-
 }

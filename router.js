@@ -8,6 +8,7 @@ import register from './views/register.js';
 import createArticle from './views/createArticle.js';
 import { onLoginSubmit, onRegisterSubmit, onCreateSubmit } from './eventListeners.js';
 import { getUserData, logout } from './services/authService.js';
+import articleService from './services/articleService.js';
 
 const routes = [
     {
@@ -24,7 +25,8 @@ const routes = [
             history.pushState({}, '', url);
 
             return template(props);
-        }
+        },
+        getData: articleService.getAll,
     },
     {
         path: '/logout',
@@ -64,7 +66,14 @@ const router = (path) => {
     let route = routes.find(x => x.path == path) || routes.find(x => x.path == '/not-found');
     let context = route.context;
     let userData = getUserData();
+    if (route.getData) {
+        route.getData()
+            .then(data => {
+                render(layout(route.template, { navigationHandler, onLoginSubmit, ...userData, ...context, data }), document.getElementById('app'));
+            })
+    }
     render(layout(route.template, { navigationHandler, onLoginSubmit, ...userData, ...context}), document.getElementById('app'));
+
 }
 
 function navigationHandler(e){
