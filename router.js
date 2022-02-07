@@ -91,11 +91,11 @@ function navigationHandler(e){
     if (e.target.tagName == 'A') {
         e.preventDefault();
         
-        console.log(e.target.href);
+        //console.log(e.target.href);
 
         let url = new URL(e.target.href);
 
-        console.log(url);
+        //console.log(url);
 
         router(url.pathname);
     }
